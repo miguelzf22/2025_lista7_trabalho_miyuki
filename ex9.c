@@ -27,7 +27,7 @@ int main()
     for (int i = 0; i < 50; i++) {
         valor_diagonal = B[i][i];
    
-        if (valor_diagonal == A[i]) {     //if usado para aumentar +1 o contador cada vez que o numeros da diagonal é igual aos presentes na matriz 1D
+        if (valor_diagonal == A[i]) {     //if usado para aumentar +1 o contador cada vez que o numeros da diagonal Ã© igual aos presentes na matriz 1D
         	contador++;
         }
 	}
