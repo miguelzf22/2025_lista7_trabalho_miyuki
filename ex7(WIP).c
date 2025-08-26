@@ -27,14 +27,20 @@ void cadastro(){
 	for(int i=0;i<MAX;++i){
 		printf("\n\033[7m Administrativo #%i \033[0m\n", i+1);
 		printf("\nNome:\n");
-		fflsuh(stdin);
+		fflush(stdin);
 		fgets(cad[i].nome, 255, stdin);
-		cad[i].nome[strcspn(cad[i].nome,"\n")]="\0";
+		cad[i].nome[strcspn(cad[i].nome,"\n")]='\0';
 		printf("\nIdade:\n");
 		scanf("%i", &cad[i].idade);
 		printf("\n");
 	}
 	cadastrado = true;	
+}
+
+void swap(int i, int j){
+	aux[i] = cad[i];
+	cad[i] = cad[j];
+	cad[j] = aux[i];
 }
 
 void classificar(){
@@ -47,47 +53,55 @@ void classificar(){
 		scanf("%i", &escolha);
 		switch(escolha){
 			case 1:
-				
+				for(int i=0;i<MAX-1;++i){
+					for(int j=i+1;j<MAX;++j){
+						if(strcmp(cad[i].nome, cad[j].nome)>0){
+							swap(i, j);	
+						}
+					}
+				}
 				break;
 			
 			case 2:
-				
+				for(int i=0;i<MAX-1;++i){
+					for(int j=i+1;j<MAX;++j){
+						if(strcmp(cad[i].nome, cad[j].nome)<-0){
+							swap(i, j);	
+						}
+					}
+				}
 				break;
 			
 			case 3:
 				for(int i=0;i<MAX-1;++i){
-					for(int j=MAX+1;j<MAX;++j){
+					for(int j=i+1;j<MAX;++j){
 						if(cad[i].idade>cad[j].idade){
-							aux[i] = cad[i];
-							cad[i] = cad[j];
-							cad[j] = aux[i];	
+							swap(i, j);	
 						}
 					}
 				}
 				break;
 			case 4:
 				for(int i=0;i<MAX-1;++i){
-					for(int j=MAX+1;j<MAX;++j){
+					for(int j=i+1;j<MAX;++j){
 						if(cad[i].idade<cad[j].idade){
-							aux[i] = cad[i];
-							cad[i] = cad[j];
-							cad[j] = aux[i];	
+							swap(i, j);	
 						}
 					}
 				}
 				break;		
 			case 5:
-				printf("\n\033[31mSaindo...\033[0m\n");
+				printf("\n\033[31mSaindo...\033[0m\n\n");
 				break;
 			
 			default:
 				printf("\n\033[31mOpcao invalida, escolha novamente\033[0m\n\n");
 				break;
 		}
-		if(escolha<5 || escolha>0){
-			printf("N\tNome\tIdade\n\n");
+		if(escolha<5 && escolha>0){
+			printf("\nN\tNome\tIdade\n\n");
 			for(int i=0;i<MAX;i++){
-				printf("\n%i\t%s\t%i\n", i+1, cad[i].nome, cad[i].idade);
+				printf("%i\t%s\t%i\n\n", i+1, cad[i].nome, cad[i].idade);
 			}
 		}
 	}
@@ -102,31 +116,64 @@ void pesquisa_nome(){
 }
 
 void pesquisa_idade(){
-	
+		
 }
 
 void aposentados(){
-	
+	bool aposentado;
+	for(int i=0;i<MAX;i++){
+		if(cad[i].idade>=60){
+			aposentado=true;
+			break;
+		}
+	}
+	if(aposentado){
+		printf("\nN\tNome\tIdade\n\n");
+		for(int i=0;i<MAX;i++){
+			cad[i].idade>=60?
+			printf("%i\t%s\t%i\n\n", i+1, cad[i].nome, cad[i].idade):
+			0;
+		}
+	}
+	else{
+		printf("\n\033[31mNao ha administrativos aposentados\033[0m\n\n");
+	}
 }
 
 void ativos(){
-	
+	bool ativo;
+	for(int i=0;i<MAX;i++){
+		if(cad[i].idade<60){
+			ativo=true;
+			break;
+		}
+	}
+	if(ativo){
+		printf("\nN\tNome\t\tIdade\n\n");
+		for(int i=0;i<MAX;i++){
+			cad[i].idade>=60?
+			0:printf("%i\t%s\t\t%i\n\n", i+1, cad[i].nome, cad[i].idade);
+		}
+	}
+	else{
+		printf("\n\033[31mNao ha administrativos ativos\033[0m\n\n");
+	}
 }
 
-int cadastro_check(){
+bool cadastro_check(){
 	if(cadastrado){
-		return 1;
+		return true;
 	}
 	else{
 		printf("\n\033[31mNao ha cadastros, cadastre-se apertando 1\033[0m\n\n");
-		return 0;
+		return false;
 	}
 }
 
 int main(){
 	int escolha;
 	while(escolha!=8){
-		printf("\033[30;43m Menu \033[0m\n\n");
+		printf("\033[2;30;43m Menu \033[0m\n\n");
 		printf("1 - Cadastre os 50 administrativos\t"); printf("5 - Pesquisa por idade\n");
 		printf("2 - Classificar os administrativos\t"); printf("6 - Listar aposentados\n");
 		printf("3 - Correcao de erros no cadastro\t"); printf("7 - Listar ativos\n");
@@ -139,11 +186,17 @@ int main(){
 				break;
 			
 			case 2:
-				if(cadastro_check() == 1){
-					classificar();
-				}
+				cadastro_check()?classificar():0;
 				break;
 				
+			case 6:
+				cadastro_check()?aposentados():0;
+				break;
+			
+			case 7:
+				cadastro_check()?ativos():0;
+				break;
+					
 			case 8:
 				printf("\n\033[31mSaindo...\033[0m\n");
 				break;
@@ -153,6 +206,5 @@ int main(){
 				break;
 		}	
 	}
-	
 	return 0;
 }
