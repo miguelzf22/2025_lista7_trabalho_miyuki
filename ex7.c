@@ -1,19 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdbool.h>
-#define MAX 3
-
-/* Exercicio 7 -
-Desenvolver um algoritmo que controle as idades de 50 administrativos de uma
-escola e que efetue a exibição dos aposentados e ativos. O algoritmo em questão
-deverá executar as seguintes rotinas:
-a-cadastrar os 50 administrativos e suas idades
-b-classificar os administrativos cadastrados
-c-corrigir administrativos e/ou idades que tenham sido cadastrados com erros
-d-pesquisar administrativos por nome e por idade
-e-listar administrativos aposentados (>=60 anos)
-f-listar administrativos ativos 
-*/
+#define MAX 50
 
 typedef struct{
 	char nome[255];
@@ -108,15 +96,83 @@ void classificar(){
 }
 
 void corrigir(){
+	int i, escolha, escolha2;
+	printf("\nN\tNome\tIdade\n\n");
+	for(i=0;i<MAX;i++){
+		printf("%i\t%s\t%i\n\n", i+1, cad[i].nome, cad[i].idade);
+	}
+	while(escolha<0 || escolha>MAX){
+		printf("Escolha uma pessoa da lista (Numero da posicao):\n\n");
+		scanf("%i", &escolha);
+		if(escolha<0 || escolha>MAX){
+			printf("\n\033[31mOpcao invalida, tente novamente\033[0m\n");
+		}
+	}
+	escolha--;
+	while(escolha2!= 3){
+		printf("\n1 - Nome\t2 - Idade\n");
+		printf("3 - Sair\n\n");
+		printf("O que deseja alterar?\n\n");
+		scanf("%i", &escolha2);
+		switch(escolha2){
+			case 1:
+				printf("\nInsira novo nome:\n\n");
+				fflush(stdin);
+				fgets(cad[escolha].nome, 255, stdin);
+				aux[i].nome[strcspn(aux[i].nome, "\n")]='\0';
+				printf("\n\033[92mAlteracao na posicao %i! Novo nome: %s \033[0m\n\n", escolha+1, cad[escolha].nome);
+				break;
+			
+			case 2:
+				printf("\nInsira novo idade:\n\n");
+				scanf("%i", &cad[escolha].idade);
+				printf("\n\033[92mAlteracao na posicao %i! Nova idade: %i \033[0m\n\n", escolha+1, cad[escolha].idade);
+				break;
+				
+			case 3:
+				printf("\n\033[31mSaindo...\033[0m\n");
+				break;
+			
+			default:
+				printf("\n\033[31mOpcao invalida, escolha novamente\033[0m\n\n");
+				break;	
+		}	
+	}
+	
 	
 }
 
 void pesquisa_nome(){
-	
+	int i;
+	char pesquisa[255];
+	bool flag;
+	flag = false;
+	printf("\nInsira nome para pesquisa:\n\n");
+	fflush(stdin);
+	fgets(pesquisa, 255, stdin);
+	pesquisa[strcspn(pesquisa, "\n")]='\0';
+	for(i=0;i<MAX;++i){
+		if(strcmp(pesquisa, cad[i].nome)==0){
+			flag = true;
+			break;
+		}
+	}
+	flag?printf("\n\033[92mNome encontrado na posicao %i! (%s - %i)\033[0m\n\n", i+1, cad[i].nome, cad[i].idade):printf("\n\033[31mNome nao encontrado\033[0m\n\n");
 }
 
 void pesquisa_idade(){
-		
+	int pesquisa, i;
+	bool flag;
+	flag = false;
+	printf("\nInsira idade para pesquisa:\n\n");
+	scanf("%i", &pesquisa);
+	for(i=0;i<MAX;++i){
+		if(pesquisa==cad[i].idade){
+			flag = true;
+			break;
+		}
+	}
+	flag?printf("\n\033[92mIdade encontrado na posicao %i! (%s - %i)\033[0m\n\n", i+1, cad[i].nome, cad[i].idade):printf("\n\033[31mIdade nao encontrado\033[0m\n\n");	
 }
 
 void aposentados(){
@@ -179,6 +235,7 @@ int main(){
 		printf("3 - Correcao de erros no cadastro\t"); printf("7 - Listar ativos\n");
 		printf("4 - Pesquisa por nome\t\t\t"); printf("8 - Sair\n\n");
 		printf("Escolha uma opcao:\n\n");
+		fflush(stdin);
 		scanf("%i", &escolha);
 		switch(escolha){
 			case 1:
@@ -187,6 +244,18 @@ int main(){
 			
 			case 2:
 				cadastro_check()?classificar():0;
+				break;
+			
+			case 3:
+				cadastro_check()?corrigir():0;
+				break;
+				
+			case 4:
+				cadastro_check()?pesquisa_nome():0;
+				break;
+				
+			case 5:
+				cadastro_check()?pesquisa_idade():0;
 				break;
 				
 			case 6:
