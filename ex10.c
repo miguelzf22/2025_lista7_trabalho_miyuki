@@ -36,21 +36,21 @@ int main(){
 	}
 	
 	getchar();
-	printf("\n\nDeseja buscar um número?\nQualquer Tecla - Continuar \nS - Sair\n");
+	printf("\n\nDeseja buscar um nÃºmero?\nQualquer Tecla - Continuar \nS - Sair\n");
 	scanf("%c", &verif);
 	
 	while(verif != 'S' && verif != 's'){
-		printf("Qual número você deseja buscar? ");
+		printf("Qual nÃºmero vocÃª deseja buscar? ");
 		scanf("%d", &t);
 		
 		for(int u=0; u<10; ++u){
 			if(B[u] == t){
-				printf("\nO número foi achado na %d(o) posição.\n", u+1);
+				printf("\nO nÃºmero foi achado na %d(o) posiÃ§Ã£o.\n", u+1);
 				achado=true;
 			}
 			
 			if(u == 9 && achado==false){
-				printf("\nO número não foi achado.\n");
+				printf("\nO nÃºmero nÃ£o foi achado.\n");
 			}
 		}
 		
@@ -61,7 +61,7 @@ int main(){
 	}
 	
 	if(verif == 'S' || verif != 's'){
-		printf("\nObrigado por testar nosso código!\n");
+		printf("\nObrigado por testar nosso cÃ³digo!\n");
 	}
 	
 	return 0;
