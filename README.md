@@ -22,3 +22,4 @@ Thales de Brito.
 8 - Miguel Fernandes /
 9 - Gabriel Valones /
 10 - Arthur Brito
+Debug - Thales de Brito
