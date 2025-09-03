@@ -1,6 +1,5 @@
 #include<stdio.h>
-
-
+//Não foi definida como deve ser feita a inserção de dados, a partir disso, foi utilizda uma array predefinida
 int main()
 {
 	int A[50], i, j, contador = 0;
@@ -36,3 +35,4 @@ int main()
 	
 	return 0;
 }
+
